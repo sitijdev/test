@@ -40,7 +40,7 @@ async function getImagesData(page) {
 
 async function getGoogleImagesResults() {
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
   const URL = `https://www.google.com/search?q=${encodeURI(searchQuery)}&tbm=isch&hl=en&gl=es`;
