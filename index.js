@@ -12,7 +12,7 @@ async function scrapeImages(keywords) {
   while (true) {
     previousHeight = await page.evaluate('document.body.scrollHeight');
     await page.evaluate('window.scrollTo(0, document.body.scrollHeight)');
-    await page.waitForTimeout(2000); 1  // <-- Perbaiki baris ini
+    await page.waitForTimeout(2000);  // <-- Pastikan baris ini benar
     const currentHeight = await page.evaluate('document.body.scrollHeight');
     if (previousHeight === currentHeight) {
       break;
