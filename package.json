@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "google-imgs": "^1.0.3-beta",
-    "axios": "^1.4.0"
+    "google-img-scrap": "^1.1.4"
   }
 }
