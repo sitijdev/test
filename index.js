@@ -1,25 +1,34 @@
-const { scrapeImages } = require('scrape-google-images');
+const google = require("google-imgs");
+const axios = require('axios');
 
-const query = 'cats';
+async function scrapeImages(query) {
+  try {
+    let result = await google.searchImage(query);
 
-const options = {
-  limit: 10,
-  imgSize: 'm',
-  imgType: 'photo',
-  imgColor: 'color',
-  imgar: 'xw',
-  fileType: 'jpg',
-  safe: false,
-  siteSearch: '',
-  rights: '',
-  metadata: true,
-  imgData: false,
-  engine: 'puppeteer' 
-};
+    // Filter gambar yang valid
+    let workingUrls = [];
+    let i = 0;
+    while (workingUrls.length < 10 && i < result.length) { // Batasi maksimal 10 gambar
+      try {
+        const response = await axios.get(result[i], { 
+          responseType: 'arraybuffer', // Mendapatkan response sebagai binary data
+          headers: { 'User-Agent': 'Mozilla/5.0' } // Menambahkan User-Agent
+        });
+        if (response.status === 200) {
+          workingUrls.push({ imgUrl: result[i] });
+        }
+      } catch (e) { 
+        // Tangani error saat mengambil gambar
+        console.error(`Error fetching image ${result[i]}:`, e); 
+      }
+      i++;
+    }
 
-async function scrapeGoogleImages() {
-  const images = await scrapeImages(query, options);
-  console.log(images);
+    console.log(workingUrls);
+
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }
 
-scrapeGoogleImages();
+scrapeImages("kucing lucu");
