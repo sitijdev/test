@@ -4,27 +4,28 @@ const axios = require('axios');
 async function scrapeImages(query) {
   try {
     let result = await google.searchImage(query);
+    console.log("Hasil google.searchImage:", result); // Tambahkan log untuk debugging
 
     // Filter gambar yang valid
     let workingUrls = [];
     let i = 0;
-    while (workingUrls.length < 10 && i < result.length) { // Batasi maksimal 10 gambar
+    while (workingUrls.length < 10 && i < result.length) { 
       try {
         const response = await axios.get(result[i], { 
-          responseType: 'arraybuffer', // Mendapatkan response sebagai binary data
-          headers: { 'User-Agent': 'Mozilla/5.0' } // Menambahkan User-Agent
+          responseType: 'arraybuffer', 
+          headers: { 'User-Agent': 'Mozilla/5.0' } 
         });
+        console.log("Response dari axios.get:", response); // Tambahkan log untuk debugging
         if (response.status === 200) {
           workingUrls.push({ imgUrl: result[i] });
         }
       } catch (e) { 
-        // Tangani error saat mengambil gambar
         console.error(`Error fetching image ${result[i]}:`, e); 
       }
       i++;
     }
 
-    console.log(workingUrls);
+    console.log("Gambar yang valid:", workingUrls);
 
   } catch (error) {
     console.error("Error:", error);
