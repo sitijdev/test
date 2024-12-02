@@ -5,7 +5,7 @@ async function scrapeImages() {
     const result = await GOOGLE_IMG_SCRAP({
       search: 'gadis cantik',
       excludeDomains: ['istockphoto.com', 'fb.com', 'pinimg.com', 'pinterest.com', 'instagram.com', 'facebook.com', 'tiktok.com', 'alamy.com'],
-      limit: 10,
+      limit: 5,
       query: { // Pastikan menggunakan tanda kurung kurawal
         SIZE: GOOGLE_QUERY.SIZE.LARGE
       }
