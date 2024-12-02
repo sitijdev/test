@@ -1,7 +1,7 @@
 {
   "name": "google-image-scraper",
   "version": "1.0.0",
-  "description": "Scraper gambar Google Images dengan Unirest dan Cheerio",
+  "description": "Scraper gambar Google Images dengan puppeteer",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
