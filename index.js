@@ -12,7 +12,7 @@ async function scrapeImages(keywords) {
   while (true) {
     previousHeight = await page.evaluate('document.body.scrollHeight');
     await page.evaluate('window.scrollTo(0, document.body.scrollHeight)');
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(2000); 1  // <-- Perbaiki baris ini
     const currentHeight = await page.evaluate('document.body.scrollHeight');
     if (previousHeight === currentHeight) {
       break;
@@ -43,7 +43,7 @@ async function scrapeImages(keywords) {
   console.log(`Log hasil scraping disimpan di ${filename}`);
 }
 
-// Mengambil kata kunci dari environment variable
-const keywords = process.env.KEYWORDS || 'kucing lucu';
+// Definisikan kata kunci di sini
+const keywords = 'kucing lucu'; 
 
 scrapeImages(keywords);
