@@ -1,49 +1,102 @@
-const puppeteer = require('puppeteer');
+const unirest = require("unirest");
+const cheerio = require("cheerio");
 const fs = require('fs');
 
-async function scrapeImages(keywords) {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
 
-  await page.goto(`https://www.google.com/search?q=${keywords}&tbm=isch`);
+// Konfigurasi
+const searchUrl = "https://www.google.com/search?q={keywords}&oq={keywords}&hl=en&tbm=isch&asearch=ichunk&async=_id:rg_s,_pms:s,_fmt:pc&sourceid=chrome&ie=UTF-8";
+const keywords = "nike";
+const outputFilename = 'google_images.json'; // Nama file output
 
-  // Scroll ke bawah untuk memuat lebih banyak gambar
-  let previousHeight;
-  while (true) {
-    previousHeight = await page.evaluate('document.body.scrollHeight');
-    await page.evaluate('window.scrollTo(0, document.body.scrollHeight)');
-    await page.waitForTimeout(2000);  // <-- Pastikan baris ini benar
-    const currentHeight = await page.evaluate('document.body.scrollHeight');
-    if (previousHeight === currentHeight) {
-      break;
-    }
-  }
 
-  const imageUrls = await page.evaluate(() => {
-    const imgElements = document.querySelectorAll('img.rg_i');
-    const urls = [];
-    for (const img of imgElements) {
-      urls.push(img.src);
-    }
-    return urls;
-  });
-
-  await browser.close();
-
-  // Membuat timestamp
-  const timestamp = Date.now();
-
-  // Membuat nama file JSON
-  const filename = `${keywords.replace(/ /g, '_')}.${timestamp}.json`;
-
-  // Menyimpan URL gambar ke file JSON
-  const jsonData = JSON.stringify(imageUrls);
-  fs.writeFileSync(filename, jsonData);
-
-  console.log(`Log hasil scraping disimpan di ${filename}`);
+// Fungsi untuk mendapatkan delay acak antara 1 dan 3 detik
+function getRandomDelay() {
+  return Math.floor(Math.random() * 3000) + 1000;
 }
 
-// Definisikan kata kunci di sini
-const keywords = 'kucing lucu'; 
+// Fungsi untuk memilih User-Agent secara acak
+const selectRandomUserAgent = () => {
+  const userAgents = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36",
+  ];
+  const randomNumber = Math.floor(Math.random() * userAgents.length);
+  return userAgents[randomNumber];
+};
 
-scrapeImages(keywords);
+
+// Fungsi untuk mengambil data gambar dari Google Images
+async function fetchImagesData(url) {
+  let user_agent = selectRandomUserAgent();
+  let header = { "User-Agent": `${user_agent}` };
+
+  try {
+    const response = await unirest
+      .get(url)
+      .headers(header);
+    return response.body; 
+  } catch (error) {
+    console.error('Error saat mengambil data:', error);
+    throw error; // Lempar error agar bisa ditangani di fungsi yang memanggil
+  }
+}
+
+
+// Fungsi untuk memproses data HTML dan mengekstrak informasi gambar
+function extractImageData(html) {
+  let $ = cheerio.load(html);
+  let images_results = [];
+
+  $("div.rg_bx").each(async (i, el) => {
+    let json_string = $(el).find(".rg_meta").text();
+    let imageData = JSON.parse(json_string);
+
+    images_results.push({
+      title: $(el).find(".iKjWAf .mVDMnf").text(),
+      source: $(el).find(".iKjWAf .FnqxG").text(),
+      link: imageData.ru || '',
+      original: imageData.ou || '',
+      thumbnail: $(el).find(".rg_l img").attr("src") 
+                || $(el).find(".rg_l img").attr("data-src") 
+                || '',
+    });
+
+    await new Promise(resolve => setTimeout(resolve, getRandomDelay()));
+  });
+
+  return images_results;
+}
+
+
+// Fungsi untuk menyimpan data gambar ke file JSON
+function saveImageData(filename, data) {
+  try {
+    const jsonData = JSON.stringify(data);
+    fs.writeFileSync(filename, jsonData);
+    console.log(`Data gambar disimpan di ${filename}`);
+  } catch (error) {
+    console.error('Error saat menyimpan data:', error);
+  }
+}
+
+
+// Fungsi utama untuk menjalankan proses scraping
+async function scrapeImages() {
+  const url = searchUrl.replace(/{keywords}/g, keywords);
+
+  try {
+    const html = await fetchImagesData(url);
+    const imagesData = extractImageData(html);
+    saveImageData(outputFilename, imagesData);
+  } catch (error) {
+    console.error('Proses scraping gagal:', error);
+  }
+}
+
+
+// Jalankan scraper
+scrapeImages();
