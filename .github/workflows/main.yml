@@ -16,13 +16,8 @@ jobs:
       with:
         node-version: '20' 
 
-    - name: Hapus node_modules dan package-lock.json
-      run: |
-        rm -rf node_modules
-        rm -f package-lock.json
-
     - name: Install dependencies
-      run: npm install
+      run: npm install scrape-google-images
 
     - name: Run scraper
       run: node index.js
