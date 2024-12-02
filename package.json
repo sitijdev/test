@@ -17,12 +17,12 @@
     "google",
     "images"
   ],
-  "author": "Peter Evers",
+  "author": "Arifar",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/pevers/images-scraper/issues"
+    "url": "https://github.com/arifarfx/g-images-scraper/issues"
   },
-  "homepage": "https://github.com/pevers/images-scraper#readme",
+  "homepage": "https://github.com/arifarfx/g-images-scraper#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
     "puppeteer": "^23.9.0",
