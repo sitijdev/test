@@ -6,8 +6,7 @@ async function scrapeImages() {
       search: 'kucing lucu',
       limit: 10,
       query: { // Pastikan menggunakan tanda kurung kurawal
-        SIZE: GOOGLE_QUERY.SIZE.LARGE,
-        TYPE: GOOGLE_QUERY.TYPE.PHOTO
+        SIZE: GOOGLE_QUERY.SIZE.LARGE
       }
     });
 
