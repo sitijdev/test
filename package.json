@@ -1,60 +1,15 @@
 {
-  "name": "g-images-scraper",
+  "name": "google-image-scraper",
   "version": "1.0.0",
-  "description": "Simple scraper for Google images using Puppeteer",
-  "main": "src/index.js",
+  "description": "Scraper gambar Google Images dengan Unirest dan Cheerio",
+  "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "check-codestyle": "prettier-check '**/*.{js,jsx,json,css,ts,tsx,md,yaml}'",
-    "fix-all-code-style": "prettier --write '**/*.{js,jsx,json,css,ts,tsx,md,yaml}'"
+    "start": "node index.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pevers/images-scraper.git"
-  },
-  "keywords": [
-    "scraper",
-    "google",
-    "images"
-  ],
-  "author": "Arifar",
+  "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/arifarfx/g-images-scraper/issues"
-  },
-  "homepage": "https://github.com/arifarfx/g-images-scraper#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
-    "puppeteer": "^23.9.0",
-    "winston": "^3.17.0"
-  },
-  "devDependencies": {
-    "axios": "^1.7.8",
-    "jest": "^29.7.0",
-    "prettier": "^3.4.1",
-    "prettier-check": "^2.0.0",
-    "pretty-quick": "^4.0.0",
-    "validator": "^13.12.0"
-  },
-  "prettier": {
-    "printWidth": 100,
-    "singleQuote": true,
-    "trailingComma": "es5",
-    "overrides": [
-      {
-        "files": "*.css",
-        "options": {
-          "useTabs": false,
-          "tabWidth": 2
-        }
-      },
-      {
-        "files": "*.yaml",
-        "options": {
-          "useTabs": false,
-          "tabWidth": 2
-        }
-      }
-    ]
+    "unirest": "^0.6.0"
   }
 }
