@@ -17,7 +17,7 @@ jobs:
         node-version: '20' 
 
     - name: Install dependencies
-      run: npm install scrape-google-images
+      run: npm install
 
     - name: Run scraper
       run: node index.js
