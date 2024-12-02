@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "scrape-google-images": "^1.0.4"
+    "google-imgs": "^1.0.3-beta",
+    "axios": "^1.4.0"
   }
 }
