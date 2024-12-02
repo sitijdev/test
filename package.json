@@ -1,7 +1,7 @@
 {
   "name": "google-image-scraper",
   "version": "1.0.0",
-  "description": "Scraper gambar Google Images dengan puppeteer",
+  "description": "Scraper gambar Google Images",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
@@ -9,10 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "puppeteer": "^23.9.0",
-    "puppeteer-extra": "^3.3.6",
-    "puppeteer-extra-plugin-stealth": "^2.11.2",
-    "glob": "latest",
-    "rimraf": "latest"
+    "scrape-google-images": "^1.0.4"
   }
 }
