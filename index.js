@@ -73,13 +73,11 @@ function extractImageData(html) {
 
 
 // Fungsi untuk menyimpan data gambar ke file JSON
-function saveImageData(filename, data) {
+function logImageData(data) {
   try {
-    const jsonData = JSON.stringify(data);
-    fs.writeFileSync(filename, jsonData);
-    console.log(`Data gambar disimpan di ${filename}`);
+    console.log(data);
   } catch (error) {
-    console.error('Error saat menyimpan data:', error);
+    console.error('Error saat menampilkan data:', error);
   }
 }
 
@@ -91,7 +89,7 @@ async function scrapeImages() {
   try {
     const html = await fetchImagesData(url);
     const imagesData = extractImageData(html);
-    saveImageData(outputFilename, imagesData);
+    logImageData(imagesData); // <-- Panggil fungsi logImageData
   } catch (error) {
     console.error('Proses scraping gagal:', error);
   }
